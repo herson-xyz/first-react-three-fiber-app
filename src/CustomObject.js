@@ -1,15 +1,13 @@
-import { useMemo } from 'react'
-import * as THREE from 'three' // We did this so we could use THREE.Doubleside
+import { useEffect, useRef, useMemo } from 'react'
+import * as THREE from 'three'
 
 export default function CustomObject()
 {
+    const geometryRef = useRef()
     const verticesCount = 10 * 3 
 
     const positions = useMemo(() =>
     {
-        // We include the calculation of the object's position here
-        // in the case that the CustomObject needs to be re-rendered.
-        // useMemo helps us save the vertex information in "cache"
         const positions = new Float32Array(verticesCount * 3) 
 
         for (let i = 0; i < verticesCount * 3; i++)
@@ -18,9 +16,17 @@ export default function CustomObject()
         return positions
 
     }, [])
+
+    useEffect(() =>
+    {
+        // We use useEffect because we want to compute the 
+        // Vertex Normals after the geometry has rendered for the
+        // first time
+        geometryRef.current.computeVertexNormals()
+    }, []) // An empty array here ensures this happens only once
     
     return <mesh>
-        <bufferGeometry>
+        <bufferGeometry ref={ geometryRef }>
             <bufferAttribute 
                 attach="attributes-position"
                 count={verticesCount}
