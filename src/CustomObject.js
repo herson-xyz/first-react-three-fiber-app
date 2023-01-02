@@ -19,11 +19,8 @@ export default function CustomObject()
 
     useEffect(() =>
     {
-        // We use useEffect because we want to compute the 
-        // Vertex Normals after the geometry has rendered for the
-        // first time
         geometryRef.current.computeVertexNormals()
-    }, []) // An empty array here ensures this happens only once
+    }, [])
     
     return <mesh>
         <bufferGeometry ref={ geometryRef }>

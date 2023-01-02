@@ -13,13 +13,20 @@ export default function Experience()
 
     useFrame((state, delta) =>
     {
+        // We need an angle to feed into sin() and cos() for the circular motion.
+        // We can get this angle from Clock, which contains elapsed time.
+        const angle = state.clock.elapsedTime
+        state.camera.position.x = Math.sin(angle) * 8
+        state.camera.position.z = Math.cos(angle) * 8
+        // Then use lookAt method so the camera looks at the center of the screen
+        state.camera.lookAt(0, 0, 0)
+
         cubeRef.current.rotation.y += delta 
-        // groupRef.current.rotation.y += delta
     })
     
     return <>
         
-        <orbitControls args={[camera, gl.domElement]} />
+        {/* <orbitControls args={[camera, gl.domElement]} /> */}
         
         <directionalLight position={[1, 2, 3]} intensity={1.5} />
         <ambientLight intensity={0.5} /> {/* We add ambient light so that the darker shadows aren't unrealistically dark*/}
