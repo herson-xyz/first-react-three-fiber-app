@@ -1,9 +1,10 @@
-import { PivotControls, TransformControls, OrbitControls } from "@react-three/drei"
+import { Html, PivotControls, TransformControls, OrbitControls } from "@react-three/drei"
 import { useRef } from 'react'
 
 export default function Experience()
 {
     const cube = useRef()
+    const sphere = useRef()
     
     return <>
 
@@ -21,9 +22,18 @@ export default function Experience()
             axisColors={['#9381ff', '#ff4d6d', '#7ae582']}
             scale={100}
             fixed={true}>
-            <mesh position-x={ -2 }>
+            <mesh ref={ sphere } position-x={ -2 }>
                 <sphereGeometry />
                 <meshStandardMaterial color="orange" />
+                <Html
+                    position={[1, 1, 0]}
+                    wrapperClass="label"
+                    center // this uses the element center as the point of origin
+                    distanceFactor={8} // this helps in keeping perspective when zooming out
+                    occlude={[sphere, cube]} // we use the references to the sphere and cube and instruct the HTML component to hide if it's behind either
+                >
+                    That's a sphere 
+                </Html>
             </mesh>
         </PivotControls>
 
