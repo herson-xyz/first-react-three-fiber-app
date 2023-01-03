@@ -1,4 +1,4 @@
-import { Html, PivotControls, TransformControls, OrbitControls } from "@react-three/drei"
+import { Text, Html, PivotControls, TransformControls, OrbitControls } from "@react-three/drei"
 import { useRef } from 'react'
 
 export default function Experience()
@@ -13,8 +13,6 @@ export default function Experience()
         <directionalLight position={[1, 2, 3]} intensity={1.5} />
         <ambientLight intensity={0.5} /> 
 
-        {/* An alternative to TransformControls that is user-friendly */}
-        {/* PivotControls is not a group in the way that TransformControls is */}
         <PivotControls
             anchor={[0, 0, 0]}
             depthTest={false}
@@ -28,9 +26,9 @@ export default function Experience()
                 <Html
                     position={[1, 1, 0]}
                     wrapperClass="label"
-                    center // this uses the element center as the point of origin
-                    distanceFactor={8} // this helps in keeping perspective when zooming out
-                    occlude={[sphere, cube]} // we use the references to the sphere and cube and instruct the HTML component to hide if it's behind either
+                    center
+                    distanceFactor={8}
+                    occlude={[sphere, cube]}
                 >
                     That's a sphere 
                 </Html>
@@ -48,6 +46,20 @@ export default function Experience()
             <planeGeometry />
             <meshStandardMaterial color="greenyellow" />
         </mesh>
+
+        {/* R3F uses SDF implementation made available by troika-three-text */}
+        
+        <Text
+            font="./silkscreen-v1-latin-regular.woff"
+            fontSize={1}
+            color="salmon"
+            position={[0, 2, 0]}
+            // maxWidth={2}
+            // textAlign="center"
+        >I LOVE R3F
+            {/* We can add a material to the text */}
+            {/* <meshNormalMaterial /> */}
+        </Text>
 
     </>
 }
