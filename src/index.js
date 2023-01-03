@@ -16,8 +16,6 @@ const cameraSettings =
 
 root.render(
     <Canvas
-        // These are the default settings in R3F. Adding them here to make
-        // them more visible, but these can be removed, unless changed.
         dpr= { [ 1, 2] }
         gl={{
             antialias: true,

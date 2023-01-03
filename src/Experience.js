@@ -1,53 +1,29 @@
-import { useThree, extend, useFrame } from "@react-three/fiber"
-import { useRef } from "react"
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import CustomObject from "./CustomObject"
-
-extend({ OrbitControls })
+import { OrbitControls } from "@react-three/drei"
 
 export default function Experience()
 {
-    const { camera, gl } = useThree()
-    const cubeRef = useRef()  
-    const groupRef = useRef() 
-
-    useFrame((state, delta) =>
-    {
-        // We need an angle to feed into sin() and cos() for the circular motion.
-        // We can get this angle from Clock, which contains elapsed time.
-        const angle = state.clock.elapsedTime
-        state.camera.position.x = Math.sin(angle) * 8
-        state.camera.position.z = Math.cos(angle) * 8
-        // Then use lookAt method so the camera looks at the center of the screen
-        state.camera.lookAt(0, 0, 0)
-
-        cubeRef.current.rotation.y += delta 
-    })
     
     return <>
         
-        {/* <orbitControls args={[camera, gl.domElement]} /> */}
-        
+        <OrbitControls />
+                
         <directionalLight position={[1, 2, 3]} intensity={1.5} />
         <ambientLight intensity={0.5} /> {/* We add ambient light so that the darker shadows aren't unrealistically dark*/}
 
-        <group ref={ groupRef }>
-            <mesh position-x={ -2 }>
-                <sphereGeometry />
-                <meshStandardMaterial color="orange" />
-            </mesh>
+        <mesh position-x={ -2 }>
+            <sphereGeometry />
+            <meshStandardMaterial color="orange" />
+        </mesh>
 
-            <mesh ref={cubeRef} rotation-y={ Math.PI * 0.25 } position-x={ 2 } scale={ 1.5 }>
-                <boxGeometry />
-                <meshStandardMaterial color="mediumpurple" />
-            </mesh>
-        </group>
+        <mesh rotation-y={ Math.PI * 0.25 } position-x={ 2 } scale={ 1.5 }>
+            <boxGeometry />
+            <meshStandardMaterial color="mediumpurple" />
+        </mesh>
 
         <mesh position-y={ -1 } rotation-x={ - Math.PI * 0.5 } scale={ 10 }>
             <planeGeometry />
             <meshStandardMaterial color="greenyellow" />
         </mesh>
 
-        <CustomObject />
     </>
 }
