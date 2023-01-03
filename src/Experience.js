@@ -1,4 +1,4 @@
-import { Text, Html, PivotControls, TransformControls, OrbitControls } from "@react-three/drei"
+import { Float, Text, Html, PivotControls, TransformControls, OrbitControls, MeshReflectorMaterial } from "@react-three/drei"
 import { useRef } from 'react'
 
 export default function Experience()
@@ -44,22 +44,28 @@ export default function Experience()
 
         <mesh position-y={ -1 } rotation-x={ - Math.PI * 0.5 } scale={ 10 }>
             <planeGeometry />
-            <meshStandardMaterial color="greenyellow" />
+            {/* This only works on planar meshes */}
+            <MeshReflectorMaterial
+                resolution={1028}
+                blur={[1000, 1000]}
+                mixBlur={1}
+                mirror={0.75}
+                color="greenyellow"
+            /> 
         </mesh>
-
-        {/* R3F uses SDF implementation made available by troika-three-text */}
         
-        <Text
-            font="./silkscreen-v1-latin-regular.woff"
-            fontSize={1}
-            color="salmon"
-            position={[0, 2, 0]}
-            // maxWidth={2}
-            // textAlign="center"
-        >I LOVE R3F
-            {/* We can add a material to the text */}
-            {/* <meshNormalMaterial /> */}
-        </Text>
+        <Float
+            speed={2}
+            floatIntensity={2}
+        >
+            <Text
+                font="./silkscreen-v1-latin-regular.woff"
+                fontSize={1}
+                color="salmon"
+                position={[0, 2, 0]}
+            >I LOVE R3F
+            </Text>
+        </Float>
 
     </>
 }
