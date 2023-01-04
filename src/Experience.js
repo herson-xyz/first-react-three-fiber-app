@@ -6,9 +6,9 @@ export default function Experience()
     
     const { position } = useControls(
     {       
-        position: // Object Value allows setting a range
+        position: // Vector Value
         {
-            value: -2,
+            value: { x: -2, y: 0, z: 0},
             min: -4,
             max: 4,
             step: 0.01
@@ -22,7 +22,7 @@ export default function Experience()
         <directionalLight position={[1, 2, 3]} intensity={1.5} />
         <ambientLight intensity={0.5} /> 
 
-        <mesh position-x={ position }>
+        <mesh position={ [position.x, position.y, position.z] }>
             <sphereGeometry />
             <meshStandardMaterial color="orange" />
         </mesh>
