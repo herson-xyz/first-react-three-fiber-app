@@ -1,8 +1,17 @@
 import { useFrame } from "@react-three/fiber"
 import { useRef } from "react"
-import { BakeShadows, useHelper, OrbitControls } from '@react-three/drei'
+import { softShadows, BakeShadows, useHelper, OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import * as THREE from 'three'
+
+softShadows(
+{
+    frustum: 3.75,
+    size: 0.005,
+    near: 9.5,
+    samples: 17,
+    rings: 11
+})
 
 export default function Experience()
 {
@@ -16,8 +25,8 @@ export default function Experience()
     })
     
     return <>
-        
-        <BakeShadows />
+        {/* Removing Baked Shadows since PCSS is a per-frame effect */}
+        {/* <BakeShadows /> */}
         
         <color
             args={['purple']}
