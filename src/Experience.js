@@ -5,8 +5,14 @@ export default function Experience()
 {
     
     const { position } = useControls(
-    {   
-         position: -2 // Simple Value 
+    {       
+        position: // Object Value allows setting a range
+        {
+            value: -2,
+            min: -4,
+            max: 4,
+            step: 0.01
+        }
     })
     
     return <>
