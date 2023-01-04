@@ -1,7 +1,8 @@
 import { useFrame } from "@react-three/fiber"
 import { useRef } from "react"
-import { RandomizedLight, AccumulativeShadows, useHelper, OrbitControls } from '@react-three/drei'
+import { ContactShadows, OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
+import { useControls } from 'leva'
 
 export default function Experience()
 {
@@ -11,6 +12,13 @@ export default function Experience()
     useFrame((state, delta) =>
     {
         cube.current.rotation.y += delta 
+    })
+
+    const { color, opacity, blur } = useControls('contact shadows',
+    {
+        color: '#1d8f75',
+        opacity: { value: 0.4, min: 0, max: 1 },
+        blur: { value: 2.8, min: 0, max: 10}
     })
     
     return <>
@@ -25,40 +33,23 @@ export default function Experience()
         <OrbitControls
             makeDefault />
         
-        <AccumulativeShadows
+        <ContactShadows 
             position={[0, -0.99, 0]}
-            color="#316d69"
-            opacity={0.8}
-            // Be careful with this range.
-            // Start with 200
-            // 1000 causes a 1 second freeze before rendering on my MBP
-            // This is because Three.js has to do 1000 renders on the first frame.
-            // 'Infinity' helps us keep baking the rotation of the cube
-            frames={Infinity}
-            // This setting spreads the renders across frames
-            temporal
-            // The higher the blend, the less change you have to see the shadows
-            // on fast moving objects
-            blend={100}>
-
-            <RandomizedLight
-                amount={8}
-                radius={1}
-                ambient={0.5}
-                intensity={1}
-                position={[1, 2, 3]}
-                bias={0.001}/>
-
-        </AccumulativeShadows>
+            scale={10}
+            resolution={512}
+            far={5}
+            color={color}
+            opacity={opacity}
+            blur={blur}
+            // frames={1} // Use this if the scene is complex and we need to bake
+            />
 
         <directionalLight
             ref={directionalLight}
             position={[1, 2, 3]}
             intensity={1.5}
             castShadow
-            // This sets the detail for the shadow
             shadow-mapSize={[1024, 1024]}
-            // These settings constrain the calculation of the shadows for performance
             shadow-camera-near={1}
             shadow-camera-far={10}
             shadow-camera-top={5}
