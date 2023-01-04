@@ -4,15 +4,16 @@ import { useControls } from "leva"
 export default function Experience()
 {
     
-    const { position } = useControls(
+    const { position, color } = useControls(
     {       
         position: // Vector Value
         {
-            value: { x: -2, y: 0, z: 0},
-            min: -4,
-            max: 4,
-            step: 0.01
-        }
+            value: { x: -2, y: 0},
+            step: 0.01,
+            joystick: 'invertY'
+        },
+        
+        color: '#ff0000'
     })
     
     return <>
@@ -22,9 +23,9 @@ export default function Experience()
         <directionalLight position={[1, 2, 3]} intensity={1.5} />
         <ambientLight intensity={0.5} /> 
 
-        <mesh position={ [position.x, position.y, position.z] }>
+        <mesh position={ [position.x, position.y, 0] }>
             <sphereGeometry />
-            <meshStandardMaterial color="orange" />
+            <meshStandardMaterial color={color} />
         </mesh>
 
         <mesh rotation-y={ Math.PI * 0.25 } position-x={ 2 } scale={ 1.5 }>
