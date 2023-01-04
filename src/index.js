@@ -15,7 +15,6 @@ const cameraSettings =
 
 root.render(
     <Canvas camera={cameraSettings}>
-        <color args={ [ 'purple' ] } attach="background" />
         <Experience />
     </Canvas>
 )
