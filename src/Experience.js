@@ -1,23 +1,12 @@
 import { useFrame } from "@react-three/fiber"
 import { useRef } from "react"
-import { softShadows, BakeShadows, useHelper, OrbitControls } from '@react-three/drei'
+import { RandomizedLight, AccumulativeShadows, useHelper, OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
-import * as THREE from 'three'
-
-softShadows(
-{
-    frustum: 3.75,
-    size: 0.005,
-    near: 9.5,
-    samples: 17,
-    rings: 11
-})
 
 export default function Experience()
 {
     const cube = useRef()
     const directionalLight = useRef()
-    useHelper(directionalLight, THREE.DirectionalLightHelper, 2)
 
     useFrame((state, delta) =>
     {
@@ -25,8 +14,6 @@ export default function Experience()
     })
     
     return <>
-        {/* Removing Baked Shadows since PCSS is a per-frame effect */}
-        {/* <BakeShadows /> */}
         
         <color
             args={['purple']}
@@ -37,6 +24,32 @@ export default function Experience()
         
         <OrbitControls
             makeDefault />
+        
+        <AccumulativeShadows
+            position={[0, -0.99, 0]}
+            color="#316d69"
+            opacity={0.8}
+            // Be careful with this range.
+            // Start with 200
+            // 1000 causes a 1 second freeze before rendering on my MBP
+            // This is because Three.js has to do 1000 renders on the first frame.
+            // 'Infinity' helps us keep baking the rotation of the cube
+            frames={Infinity}
+            // This setting spreads the renders across frames
+            temporal
+            // The higher the blend, the less change you have to see the shadows
+            // on fast moving objects
+            blend={100}>
+
+            <RandomizedLight
+                amount={8}
+                radius={1}
+                ambient={0.5}
+                intensity={1}
+                position={[1, 2, 3]}
+                bias={0.001}/>
+
+        </AccumulativeShadows>
 
         <directionalLight
             ref={directionalLight}
@@ -81,7 +94,6 @@ export default function Experience()
         </mesh>
 
         <mesh
-            receiveShadow
             position-y={-1}
             rotation-x={- Math.PI * 0.5}
             scale={10}>
