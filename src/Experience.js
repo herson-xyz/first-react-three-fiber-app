@@ -27,11 +27,18 @@ export default function Experience()
     
     return <>
         
-        <Environment
-            background
-            //preset="night" // Drei has some default presets from polyhaven that are easy to call
-            files= { './environmentMaps/the_sky_is_on_fire_2k.hdr' }
-        />
+
+        
+        <Environment background>
+            <color args={ ['#000000'] } attach="background" />
+            <mesh position-z={-5} scale={10}>
+                <planeGeometry />
+                <meshBasicMaterial
+                    // Choosing a really high value (10) for the R value to increase the brightness
+                    color={[10, 0, 0]} /> 
+            </mesh>
+
+        </Environment>
         
         <color
             args={['purple']}
