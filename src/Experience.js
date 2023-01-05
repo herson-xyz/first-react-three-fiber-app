@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber"
 import { useRef } from "react"
-import { Environment, ContactShadows, OrbitControls } from '@react-three/drei'
+import { Lightformer, Environment, ContactShadows, OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { useControls } from 'leva'
 
@@ -29,15 +29,18 @@ export default function Experience()
         
 
         
-        <Environment background>
-            <color args={ ['#000000'] } attach="background" />
-            <mesh position-z={-5} scale={10}>
-                <planeGeometry />
-                <meshBasicMaterial
-                    // Choosing a really high value (10) for the R value to increase the brightness
-                    color={[10, 0, 0]} /> 
-            </mesh>
-
+        <Environment
+            background
+            preset="sunset"
+            resolution={32}>
+            <color args={['#000000']} attach="background" />
+            <Lightformer
+                position-z={-5}
+                scale={10}
+                color="red"
+                intensity={10}
+                form="ring"
+            />
         </Environment>
         
         <color
