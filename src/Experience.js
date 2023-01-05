@@ -1,13 +1,12 @@
 import { useFrame } from "@react-three/fiber"
 import { useRef } from "react"
-import { Sky, ContactShadows, OrbitControls } from '@react-three/drei'
+import { Environment, ContactShadows, OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { useControls } from 'leva'
 
 export default function Experience()
 {
     const cube = useRef()
-    const directionalLight = useRef()
 
     useFrame((state, delta) =>
     {
@@ -21,11 +20,25 @@ export default function Experience()
         blur: { value: 2.8, min: 0, max: 10}
         })
     
-    const { sunPosition } = useControls('sky', {
-        sunPositions: { value: [ 1, 2, 3 ]}
+    const { envMapIntensity } = useControls('environment map',
+    {
+        envMapIntensity: { value: 3.5, min: 0, max: 12 }
     })
     
     return <>
+        
+        <Environment
+            background    
+            files=
+            {[
+                './environmentMaps/2/px.jpg',
+                './environmentMaps/2/nx.jpg',
+                './environmentMaps/2/py.jpg',
+                './environmentMaps/2/ny.jpg',
+                './environmentMaps/2/pz.jpg',
+                './environmentMaps/2/nz.jpg'
+            ]}
+        />
         
         <color
             args={['purple']}
@@ -48,25 +61,6 @@ export default function Experience()
             // frames={1} // Use this if the scene is complex and we need to bake
             />
 
-        <directionalLight
-            ref={directionalLight}
-            position={sunPosition}
-            intensity={1.5}
-            castShadow
-            shadow-mapSize={[1024, 1024]}
-            shadow-camera-near={1}
-            shadow-camera-far={10}
-            shadow-camera-top={5}
-            shadow-camera-right={5}
-            shadow-camera-bottom={-5}
-            shadow-camera-left={-5}
-            />
-        
-        <ambientLight
-            intensity={0.5} />
-        
-        <Sky sunPosition={ sunPosition }/>
-
         <mesh
             castShadow
             position-x={-2}>
@@ -74,7 +68,8 @@ export default function Experience()
             <sphereGeometry />
 
             <meshStandardMaterial
-                color="orange" />
+                color="orange"
+                envMapIntensity={ envMapIntensity }/>
         </mesh>
 
         <mesh
@@ -87,7 +82,8 @@ export default function Experience()
             <boxGeometry />
 
             <meshStandardMaterial
-                color="mediumpurple" />
+                color="mediumpurple"
+                envMapIntensity={ envMapIntensity }/>
         </mesh>
 
         <mesh
@@ -98,7 +94,8 @@ export default function Experience()
             <planeGeometry />
 
             <meshStandardMaterial
-                color="greenyellow" />
+                color="greenyellow"
+                envMapIntensity={ envMapIntensity }/>
         </mesh>
 
     </>
