@@ -1,58 +1,31 @@
-import { useFrame } from "@react-three/fiber"
-import { useRef } from "react"
-import { Stage, OrbitControls } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 
 export default function Experience()
 {
-    const cube = useRef()
-
-    useFrame((state, delta) =>
-    {
-        cube.current.rotation.y += delta 
-    })
-    
     return <>
-          
-        <Perf
-            position="top-left" />
-        
-        <OrbitControls
-            makeDefault />
-        <Stage
-            contactShadow=
-            {{
-                opacity: 0.2,
-                blur: 3
-            }}
-            environment="sunset"
-            preset="portrait"
-            intensity={2}>
 
-            <mesh
-                castShadow
-                position-x={-2}
-                position-y={1}>
+        <Perf position="top-left" />
 
-                <sphereGeometry />
+        <OrbitControls makeDefault />
 
-                <meshStandardMaterial
-                    color="orange"/>
-            </mesh>
+        <directionalLight castShadow position={ [ 1, 2, 3 ] } intensity={ 1.5 } />
+        <ambientLight intensity={ 0.5 } />
 
-            <mesh
-                ref={cube}
-                castShadow
-                rotation-y={Math.PI * 0.25}
-                position-x={2}
-                position-y={1}
-                scale={1.5}>
+        <mesh castShadow position-x={ - 2 }>
+            <sphereGeometry />
+            <meshStandardMaterial color="orange" />
+        </mesh>
 
-                <boxGeometry />
+        <mesh castShadow position-x={ 2 } scale={ 1.5 }>
+            <boxGeometry />
+            <meshStandardMaterial color="mediumpurple" />
+        </mesh>
 
-                <meshStandardMaterial
-                    color="mediumpurple"/>
-                </mesh>
-        </Stage>
+        <mesh receiveShadow position-y={ - 1 } rotation-x={ - Math.PI * 0.5 } scale={ 10 }>
+            <planeGeometry />
+            <meshStandardMaterial color="greenyellow" />
+        </mesh>
+
     </>
 }
