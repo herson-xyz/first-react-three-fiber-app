@@ -15,14 +15,17 @@ export default function Experience()
 
     const { color, opacity, blur } = useControls('contact shadows',
     {
-        color: '#1d8f75',
+        color: '#4b2709',
         opacity: { value: 0.4, min: 0, max: 1 },
         blur: { value: 2.8, min: 0, max: 10}
         })
     
-    const { envMapIntensity } = useControls('environment map',
+    const { envMapIntensity, envMapHeight, envMapRadius, envMapScale } = useControls('environment map',
     {
-        envMapIntensity: { value: 3.5, min: 0, max: 12 }
+        envMapIntensity: { value: 3.5, min: 0, max: 12 },
+        envMapHeight: { value: 7, min: 0, max: 100 },
+        envMapRadius: { value: 20, min: 10, max: 1000 },
+        envMapScale: { value: 100, min: 10, max: 1000}
     })
     
     return <>
@@ -30,17 +33,13 @@ export default function Experience()
 
         
         <Environment
-            background
             preset="sunset"
-            resolution={32}>
-            <color args={['#000000']} attach="background" />
-            <Lightformer
-                position-z={-5}
-                scale={10}
-                color="red"
-                intensity={10}
-                form="ring"
-            />
+            ground=
+            {{
+                height: envMapHeight,
+                radius: envMapRadius,
+                scale: envMapScale
+            }}>
         </Environment>
         
         <color
@@ -54,7 +53,7 @@ export default function Experience()
             makeDefault />
         
         <ContactShadows 
-            position={[0, -0.99, 0]}
+            position={[0, 0, 0]}
             scale={10}
             resolution={512}
             far={5}
@@ -66,7 +65,8 @@ export default function Experience()
 
         <mesh
             castShadow
-            position-x={-2}>
+            position-x={-2}
+            position-y={1}>
 
             <sphereGeometry />
 
@@ -80,6 +80,7 @@ export default function Experience()
             castShadow
             rotation-y={Math.PI * 0.25}
             position-x={2}
+            position-y={1}
             scale={1.5}>
 
             <boxGeometry />
@@ -88,18 +89,5 @@ export default function Experience()
                 color="mediumpurple"
                 envMapIntensity={ envMapIntensity }/>
         </mesh>
-
-        <mesh
-            position-y={-1}
-            rotation-x={- Math.PI * 0.5}
-            scale={10}>
-
-            <planeGeometry />
-
-            <meshStandardMaterial
-                color="greenyellow"
-                envMapIntensity={ envMapIntensity }/>
-        </mesh>
-
     </>
 }
