@@ -1,8 +1,16 @@
-import { Center, Text3D, OrbitControls } from '@react-three/drei'
+import { useMatcapTexture, Center, Text3D, OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 
 export default function Experience()
 {
+    // What is MatCap?
+    // MatCap (Material Capture, also known as LitSphere) are complete materials,
+    // including lighting and reflections, so you can add it to an object and not
+    // have any need for, well, lighting and reflections.
+    // The ID for this example comes from: https://github.com/nidorx/matcaps/blob/master/PAGE-17.md#7b5254_e9dcc7_b19986_c8ac91
+    
+    const [ matcapTexture ] = useMatcapTexture('7B5254_E9DCC7_B19986_C8AC91', 256) 
+
     return <>
 
         <Perf position="top-left" />
@@ -21,7 +29,7 @@ export default function Experience()
             bevelOffset={0}
             bevelSegments={5}>
                 HELLO R3F
-                <meshNormalMaterial />
+                <meshMatcapMaterial matcap={ matcapTexture }/>
             </Text3D>
         </Center>
     </>
