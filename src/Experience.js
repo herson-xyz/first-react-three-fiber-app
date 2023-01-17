@@ -1,9 +1,13 @@
 import { useMatcapTexture, Center, Text3D, OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
+import { useState } from 'react'
 
 export default function Experience()
 {   
-    const [ matcapTexture ] = useMatcapTexture('7B5254_E9DCC7_B19986_C8AC91', 256) 
+    const [ torusGeometry, setTorusGeometry ] = useState()
+    const [ material, setMaterial] = useState()
+
+    const [matcapTexture] = useMatcapTexture('7B5254_E9DCC7_B19986_C8AC91', 256) 
 
     return <>
 
@@ -11,33 +15,30 @@ export default function Experience()
 
         <OrbitControls makeDefault />
 
+        <torusGeometry ref={ setTorusGeometry } args={[1, 0.6, 16, 32]} />
+        <meshMatcapMaterial ref={ setMaterial } matcap={ matcapTexture } />
+
         <Center>
-            <Text3D 
-            font="./fonts/helvetiker_regular.typeface.json"
-            size={0.75}
-            height={0.2}
-            curveSegments={12}
-            bevelEnabled
-            bevelThickness={0.02}
-            bevelSize={0.02}
-            bevelOffset={0}
-            bevelSegments={5}>
+            <Text3D
+                material={material}    
+                font="./fonts/helvetiker_regular.typeface.json"
+                size={0.75}
+                height={0.2}
+                curveSegments={12}
+                bevelEnabled
+                bevelThickness={0.02}
+                bevelSize={0.02}
+                bevelOffset={0}
+                bevelSegments={5}>
                 HELLO R3F
-                <meshMatcapMaterial matcap={ matcapTexture }/>
             </Text3D>
         </Center>
 
-        {/* This is the workaround to looping in JSX */}
-        {/* Array(100) gives us empty array of length 100 */}
-        {/* Wrapping that in a second array and using the spread operator, */}
-        {/* gives us an array of 100 'undefined' */}
-
         {[...Array(100)].map((value, index) =>
             <mesh
-                key={index} // When using this looping workaround, we need
-                            // to provide a key so that React knows how to
-                            // access each element created and is able to 
-                            // optimize
+                key={index}
+                geometry={torusGeometry}
+                material={material}
                 position={[
                     (Math.random() - 0.5) * 10,
                     (Math.random() - 0.5) * 10,
@@ -48,10 +49,7 @@ export default function Experience()
                     Math.random() * Math.PI,
                     Math.random() * Math.PI,
                     0
-                ]}>
-                <torusGeometry args={[1, 0.6, 16, 32]} />
-                <meshMatcapMaterial matcap={ matcapTexture } />
-            </mesh>
+                ]} />
         )}
 
     </>
