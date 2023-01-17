@@ -2,13 +2,7 @@ import { useMatcapTexture, Center, Text3D, OrbitControls } from '@react-three/dr
 import { Perf } from 'r3f-perf'
 
 export default function Experience()
-{
-    // What is MatCap?
-    // MatCap (Material Capture, also known as LitSphere) are complete materials,
-    // including lighting and reflections, so you can add it to an object and not
-    // have any need for, well, lighting and reflections.
-    // The ID for this example comes from: https://github.com/nidorx/matcaps/blob/master/PAGE-17.md#7b5254_e9dcc7_b19986_c8ac91
-    
+{   
     const [ matcapTexture ] = useMatcapTexture('7B5254_E9DCC7_B19986_C8AC91', 256) 
 
     return <>
@@ -32,5 +26,33 @@ export default function Experience()
                 <meshMatcapMaterial matcap={ matcapTexture }/>
             </Text3D>
         </Center>
+
+        {/* This is the workaround to looping in JSX */}
+        {/* Array(100) gives us empty array of length 100 */}
+        {/* Wrapping that in a second array and using the spread operator, */}
+        {/* gives us an array of 100 'undefined' */}
+
+        {[...Array(100)].map((value, index) =>
+            <mesh
+                key={index} // When using this looping workaround, we need
+                            // to provide a key so that React knows how to
+                            // access each element created and is able to 
+                            // optimize
+                position={[
+                    (Math.random() - 0.5) * 10,
+                    (Math.random() - 0.5) * 10,
+                    (Math.random() - 0.5) * 10
+                ]}
+                scale={0.2 + Math.random() * 0.2}
+                rotation={[
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI,
+                    0
+                ]}>
+                <torusGeometry args={[1, 0.6, 16, 32]} />
+                <meshMatcapMaterial matcap={ matcapTexture } />
+            </mesh>
+        )}
+
     </>
 }
