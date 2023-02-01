@@ -10,8 +10,7 @@ const material = new THREE.MeshMatcapMaterial()
 
 export default function Experience()
 {   
-
-    const donutsGroup = useRef()
+    const donuts = useRef([])
     const [matcapTexture] = useMatcapTexture('7B5254_E9DCC7_B19986_C8AC91', 256) 
 
     useEffect(() =>
@@ -25,7 +24,7 @@ export default function Experience()
 
     useFrame((state, delta) => 
     {
-        for (const donut of donutsGroup.current.children)
+        for (const donut of donuts.current)
         {
             donut.rotation.y += delta * 0.2    
         }
@@ -53,9 +52,9 @@ export default function Experience()
             </Text3D>
         </Center>
 
-        <group ref={donutsGroup}>
             {[...Array(100)].map((value, index) =>
                 <mesh
+                    ref={ (element) => donuts.current[index] = element }
                     key={index}
                     geometry={torusGeometry}
                     material={material}
@@ -71,7 +70,6 @@ export default function Experience()
                         0
                 ]} />
             )}
-        </group>
 
     </>
 }
